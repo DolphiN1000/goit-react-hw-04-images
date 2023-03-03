@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import styles from './modal.module.scss';
@@ -7,16 +7,16 @@ import styles from './modal.module.scss';
 const modalRoot = document.querySelector('#modal-root');
 
 const Modal = ({ close, children, showModal }) => {
-  const closeModal = ({ target, currentTarget, code }) => {
+  const closeModal = useCallback(({ target, currentTarget, code }) => {
     if (target === currentTarget || code === 'Escape') {
       close();
     }
-  };
+  }, [close]);
 
   useEffect(() => {
     document.addEventListener('keydown', closeModal);
     return () => document.removeEventListener('keydown', closeModal);
-  }, []);
+  }, [closeModal]);
 
   return createPortal(
     <div className={styles.overlay} onClick={closeModal}>
