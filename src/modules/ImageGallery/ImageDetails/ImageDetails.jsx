@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import styles from './imageDetails.module.scss';
 
-const ImageDetails = ({ largeImageURL, tags }) => {
+const ImageDetails = ({largeImageURL, tags}) => {
   return (
     <div className={styles.div}>
       <img className={styles.image} src={largeImageURL} alt={tags} />

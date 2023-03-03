@@ -1,7 +1,7 @@
 import Searchbar from 'shared/components/Searchbar/Searchbar';
 import ImageGallery from 'modules/ImageGallery/ImageGallery';
 import Button from 'shared/components/Button/Button';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { searchImages } from './shared/services/gallery-api';
 import { FidgetSpinner } from 'react-loader-spinner';
 import Modal from 'shared/Modal/Modal';
@@ -17,7 +17,7 @@ const App = () => {
   const [totalPage, setTotalPage] = useState(1);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [imageDetails, setImageDetails] = useState(null);
+  // const [imageDetails, setImageDetails] = useState(null);
   const [largeImageURL, setLargeImageURL] = useState('');
   const [tags, setTags] = useState('');
 
@@ -45,31 +45,32 @@ const App = () => {
     setLoading,
     page,
     setTotalPage,
-    setLoading,
     setError,
   ]);
 
-  const onSearchImages = ({ search }) => {
+  const onSearchImages = useCallback(({ search }) => {
     setSearch(search);
     setItems([]);
     setPage(1);
-  };
+  }, []);
 
-  const loadMore = () => {
+  const loadMore = useCallback( () => {
     setPage(prevPage => prevPage + 1);
-  };
+  }, []);
 
-  const showImage = ({ largeImageURL, tags }) => {
-    setImageDetails(largeImageURL, tags);
-    // setLargeImageURL(largeImageURL);
-    // setTags(tags);
+  const showImage = useCallback(({largeImageURL,tags}) => {
+    // setImageDetails(largeImageURL,tags);
+    setLargeImageURL(largeImageURL);
+    setTags(tags);
     setShowModal(true);
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setShowModal(false);
-    setImageDetails(null);
-  };
+    setLargeImageURL("");
+    setTags("");
+    // setImageDetails(null);
+  }, []);
 
   return (
     <>
@@ -97,9 +98,9 @@ const App = () => {
             />
           )}
           <ImageDetails
-          imageDetails={imageDetails}
-            // largeImageURL={largeImageURL}
-            // tags={tags}
+          // imageDetails={imageDetails}
+            largeImageURL={largeImageURL}
+            tags={tags}
           ></ImageDetails>
         </Modal>
       )}
