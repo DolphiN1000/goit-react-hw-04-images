@@ -17,7 +17,7 @@ const App = () => {
   const [totalPage, setTotalPage] = useState(1);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  // const [imageDetails, setImageDetails] = useState(null);
+  const [imageDetails, setImageDetails] = useState(null);
   const [largeImageURL, setLargeImageURL] = useState('');
   const [tags, setTags] = useState('');
 
@@ -45,8 +45,8 @@ const App = () => {
     setLoading,
     page,
     setTotalPage,
+    setLoading,
     setError,
-    searchImages,
   ]);
 
   const onSearchImages = ({ search }) => {
@@ -56,18 +56,19 @@ const App = () => {
   };
 
   const loadMore = () => {
-    setPage(page + 1);
+    setPage(prevPage => prevPage + 1);
   };
 
   const showImage = ({ largeImageURL, tags }) => {
-    setLargeImageURL(largeImageURL);
-    setTags(tags);
+    setImageDetails(largeImageURL, tags);
+    // setLargeImageURL(largeImageURL);
+    // setTags(tags);
     setShowModal(true);
   };
 
   const closeModal = () => {
     setShowModal(false);
-    // setImageDetails(null);
+    setImageDetails(null);
   };
 
   return (
@@ -96,8 +97,9 @@ const App = () => {
             />
           )}
           <ImageDetails
-            largeImageURL={largeImageURL}
-            tags={tags}
+          imageDetails={imageDetails}
+            // largeImageURL={largeImageURL}
+            // tags={tags}
           ></ImageDetails>
         </Modal>
       )}
